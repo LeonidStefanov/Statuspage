@@ -2,35 +2,46 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
-	"strings"
+	"time"
+
+	"github.com/LeonidStefanov/Statuspage/mms"
+	"github.com/LeonidStefanov/Statuspage/sms"
 )
-
-type SMSData struct {
-	Country      string
-	Bandwidth    string
-	ResponseTime string
-	Provider     string
-}
-
-// Cr := map[string]string{
-// 	"RU": "Russian Federation",
-// 	"CA": "Canada",
-// 	"BG": "Great Britain",
-// }
 
 func main() {
 
-	file, err := ioutil.ReadFile("sms.data")
+	// SMS Data
+
+	smsReader := sms.NewSmsReader("./simulator/sms.data")
+
+	data, err := smsReader.SMSData()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	fmt.Println("SMS")
+
+	data.Print()
+
+	// MMS Data
+
+	mmsReader := mms.NewMmsReader("http://127.0.0.1:8383", time.Second*15)
+
+	mmsData, err := mmsReader.MMSData()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	fmt.Println("MMS")
+
+	filteredData := mmsReader.MMSFilter(mmsData)
 	if err != nil {
 		log.Println(err)
 	}
 
-	fmt.Println(string(file))
-
-	smsStr := strings.Split(string(file), ";")
-
-	fmt.Println(smsStr)
+	filteredData.Print()
 
 }
