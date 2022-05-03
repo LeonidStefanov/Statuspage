@@ -2,6 +2,7 @@ package sms
 
 import (
 	"io/ioutil"
+	"log"
 	"strings"
 
 	"github.com/LeonidStefanov/Statuspage/models"
@@ -20,9 +21,10 @@ func NewSmsReader(path string) *SMS {
 
 func (s *SMS) SMSData() (models.SMSArray, error) {
 
-	var d models.SMSData
+	var smsInfo models.SMSData
 	file, err := ioutil.ReadFile(s.path)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -35,13 +37,13 @@ func (s *SMS) SMSData() (models.SMSArray, error) {
 
 		if len(data) == 4 {
 
-			d = models.SMSData{
+			smsInfo = models.SMSData{
 				Country:      data[0],
 				Bandwidth:    data[1],
 				ResponseTime: data[2],
 				Provider:     data[3],
 			}
-			smsData = append(smsData, d)
+			smsData = append(smsData, smsInfo)
 
 		}
 
@@ -50,12 +52,12 @@ func (s *SMS) SMSData() (models.SMSArray, error) {
 	return smsData, nil
 }
 func (s *SMS) SMSFilter(sms models.SMSArray) models.SMSArray {
-	countries := utils.GetCountriesList()
+	countries := utils.CountriesList()
 	filterData := models.SMSArray{}
 
 	for i := 0; i < len(sms); i++ {
 		for j := 0; j < len(countries); j++ {
-			if sms[i].Country == countries[j] && sms[i].Provider == utils.GetProviderByCountry(countries[j]) {
+			if sms[i].Country == countries[j] && sms[i].Provider == utils.ProviderByCountry(countries[j]) {
 
 				filterData = append(filterData, sms[i])
 			}

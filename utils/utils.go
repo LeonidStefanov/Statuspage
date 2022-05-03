@@ -1,9 +1,9 @@
 package utils
 
-func GetCountriesList() []string {
+func CountriesList() []string {
 	return []string{"RU", "US", "GB", "FR", "BL", "AT", "BG", "DK", "CA", "ES", "CH", "TR", "PE", "NZ", "MC"}
 }
-func GetProviderByCountry(country string) string {
+func ProviderByCountry(country string) string {
 	ProviderMap := map[string]string{
 		"RU": "Topolo",
 		"US": "Rond",
@@ -23,4 +23,26 @@ func GetProviderByCountry(country string) string {
 	}
 
 	return ProviderMap[country]
+}
+
+func VoiceCallProviderByCountry(country string) string {
+	voiceProviderMap := map[string]string{
+		"RU": "TransparentCalls",
+		"US": "E-Voice",
+		"GB": "TransparentCalls",
+		"FR": "TransparentCalls",
+		"BL": "E-Voice",
+		"AT": "TransparentCalls",
+		"BG": "E-Voice",
+		"DK": "JustPhone",
+		"CA": "JustPhone",
+		"ES": "E-Voice",
+		"CH": "JustPhone",
+		"TR": "TransparentCalls",
+		"PE": "JustPhone",
+		"NZ": "JustPhone",
+		"MC": "E-Voice",
+	}
+
+	return voiceProviderMap[country]
 }

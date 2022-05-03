@@ -11,21 +11,26 @@ import (
 
 func main() {
 
-	// SMS Data
+	// // SMS Data
 
 	smsReader := sms.NewSmsReader("./simulator/sms.data")
 
-	data, err := smsReader.SMSData()
+	smsData, err := smsReader.SMSData()
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	fmt.Println("SMS")
+	filterSMS := smsReader.SMSFilter(smsData)
+	if err != nil {
+		log.Println(err)
+	}
 
-	data.Print()
+	fmt.Println("SMS:")
 
-	// MMS Data
+	filterSMS.Print()
+
+	// // MMS Data
 
 	mmsReader := mms.NewMmsReader("http://127.0.0.1:8383", time.Second*15)
 
@@ -35,13 +40,15 @@ func main() {
 		return
 	}
 
-	fmt.Println("MMS")
+	fmt.Println("MMS:")
 
-	filteredData := mmsReader.MMSFilter(mmsData)
+	filterMMS := mmsReader.MMSFilter(mmsData)
 	if err != nil {
 		log.Println(err)
 	}
 
-	filteredData.Print()
+	filterMMS.Print()
+
+	// Voice Call Data
 
 }

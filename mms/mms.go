@@ -29,6 +29,7 @@ func NewMmsReader(url string, timeOut time.Duration) *MMS {
 func (m *MMS) MMSData() (models.MMSArray, error) {
 	req, err := http.NewRequest("GET", m.url+"/mms", nil)
 	if err != nil {
+		log.Println(err)
 		return nil, err
 	}
 
@@ -67,12 +68,12 @@ func (m *MMS) MMSData() (models.MMSArray, error) {
 }
 
 func (m *MMS) MMSFilter(mms models.MMSArray) models.MMSArray {
-	countries := utils.GetCountriesList()
+	countries := utils.CountriesList()
 	filterData := []models.MMSData{}
 
 	for i := 0; i < len(mms); i++ {
 		for j := 0; j < len(countries); j++ {
-			if mms[i].Country == countries[j] && mms[i].Provider == utils.GetProviderByCountry(countries[j]) {
+			if mms[i].Country == countries[j] && mms[i].Provider == utils.ProviderByCountry(countries[j]) {
 
 				filterData = append(filterData, mms[i])
 			}

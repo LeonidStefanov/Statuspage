@@ -16,9 +16,20 @@ type MMSData struct {
 	ResponseTime string `json:"response_time"`
 }
 
-type MMSArray []MMSData
+type VoiceCallData struct {
+	Country             string
+	Bandwidth           string
+	ResponseTime        string
+	Provider            string
+	ConnectionStability float32
+	TTFB                int
+	VoicePurity         int
+	MedianOfCallsTime   int
+}
 
 type SMSArray []SMSData
+type MMSArray []MMSData
+type VoiceCallArray []VoiceCallData
 
 func (m MMSArray) Print() {
 	for i := 0; i < len(m); i++ {
@@ -29,5 +40,11 @@ func (m MMSArray) Print() {
 func (s SMSArray) Print() {
 	for i := 0; i < len(s); i++ {
 		fmt.Println(s[i])
+	}
+}
+
+func (v VoiceCallArray) Print() {
+	for i := 0; i < len(v); i++ {
+		fmt.Println(v[i])
 	}
 }
